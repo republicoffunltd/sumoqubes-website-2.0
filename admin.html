@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SUMO QUBES NEWS CMS</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: var(--font-primary, 'Inter', sans-serif);
+      background-color: var(--color-cyan, #00c8f5);
+      background-image: url('images/leaderboard-bg.png');
+      background-size: cover;
+      background-position: center;
+      color: var(--color-dark-gray, #3c3c3b);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      
+      background-size: cover;
+      background-position: center;
+      opacity: 0.15;
+      z-index: -1;
+    }
+
+    .cms-shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    .cms-container {
+      background: var(--color-white, #ffffff);
+      border-radius: var(--radius-large, 30px);
+      box-shadow: var(--shadow-float, 0 12px 30px rgba(0,0,0,0.35));
+      padding: 48px;
+    }
+
+    .cms-header {
+      margin: 0 0 12px;
+      font-family: var(--font-display, 'Porkys', cursive);
+      font-size: clamp(2.2rem, 3vw, 2.8rem);
+      text-align: center;
+      color: var(--color-pink, #da2f6a);
+      text-shadow: var(--text-shadow-base, -4px -4px 0 rgba(0,0,0,0.2));
+      letter-spacing: 1px;
+    }
+
+    .cms-subheader {
+      margin: 0 0 32px;
+      text-align: center;
+      color: var(--color-text, #555555);
+      font-size: 1rem;
+    }
+
+    #message {
+      margin-bottom: 24px;
+    }
+
+    .tabs-cms {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .tab-cms {
+      padding: 12px 24px;
+      background: rgba(60, 60, 59, 0.08);
+      border: none;
+      border-radius: var(--radius-small, 8px);
+      cursor: pointer;
+      font-family: var(--font-primary, 'Inter', sans-serif);
+      font-weight: 600;
+      color: var(--color-dark-gray, #3c3c3b);
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+    }
+
+    .tab-cms:hover:not(.active) {
+      background: rgba(0, 200, 245, 0.12);
+      color: var(--color-pink, #da2f6a);
+      transform: translateY(-1px);
+    }
+
+    .tab-cms.active {
+      background: var(--color-pink, #da2f6a);
+      color: var(--color-white, #ffffff);
+      box-shadow: var(--shadow-small, 2px 2px 0 rgba(0,0,0,0.2));
+      transform: translateY(-1px);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cms-form,
+    .articles-list {
+      background: rgba(245, 245, 245, 0.68);
+      border-radius: var(--radius-medium, 15px);
+      padding: 32px;
+      box-shadow: var(--shadow-medium, 4px 4px 0 rgba(0,0,0,0.2));
+      backdrop-filter: blur(6px);
+    }
+
+    .cms-form + .cms-form {
+      margin-top: 32px;
+    }
+
+    .cms-form h2,
+    .articles-list h2 {
+      margin-top: 0;
+      font-family: var(--font-display, 'Porkys', cursive);
+      color: var(--color-pink, #da2f6a);
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-weight: 700;
+      color: var(--color-dark-gray, #3c3c3b);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid rgba(60, 60, 59, 0.15);
+      border-radius: var(--radius-small, 8px);
+      font-family: var(--font-primary, 'Inter', sans-serif);
+      font-size: 15px;
+      background: rgba(255, 255, 255, 0.95);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .image-input-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .image-input-row input[type="text"] {
+      flex: 1 1 260px;
+    }
+
+    .image-upload-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-upload {
+      white-space: nowrap;
+    }
+
+    .image-preview {
+      margin-top: 16px;
+      max-width: 280px;
+      border-radius: var(--radius-small, 8px);
+      border: 2px solid rgba(60, 60, 59, 0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      display: none;
+    }
+
+    .form-group textarea {
+      min-height: 220px;
+      resize: vertical;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    #cancelEditBtn {
+      display: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .editor-area:focus-visible {
+      outline: none;
+      border-color: var(--color-cyan, #00c8f5);
+      box-shadow: 0 0 0 3px rgba(0, 200, 245, 0.15);
+    }
+
+    .help-text {
+      font-size: 13px;
+      color: rgba(60, 60, 59, 0.65);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--color-pink, #da2f6a);
+      color: var(--color-white, #ffffff);
+      padding: 14px 36px;
+      border: none;
+      border-radius: var(--radius-small, 8px);
+      font-family: var(--font-display, 'Porkys', cursive);
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s, filter 0.25s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium, 4px 4px 0 rgba(0,0,0,0.2));
+      filter: brightness(1.05);
+    }
+
+    .btn-secondary,
+    .btn-danger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--radius-small, 8px);
+      font-family: var(--font-primary, 'Inter', sans-serif);
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+    }
+
+    .btn-secondary {
+      background-color: var(--color-yellow, #f5d547);
+      color: var(--color-dark-gray, #3c3c3b);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-small, 2px 2px 0 rgba(0,0,0,0.2));
+      filter: brightness(0.98);
+    }
+
+    .btn-danger {
+      background-color: #ff5757;
+      color: var(--color-white, #ffffff);
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-small, 2px 2px 0 rgba(0,0,0,0.2));
+      filter: brightness(0.95);
+    }
+
+    .articles-list {
+      margin-top: 32px;
+    }
+
+    .article-item {
+      background: var(--color-white, #ffffff);
+      padding: 20px 24px;
+      border-radius: var(--radius-small, 8px);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .article-info h3 {
+      margin: 0 0 6px;
+      color: var(--color-pink, #da2f6a);
+    }
+
+    .article-info p {
+      margin: 0;
+      font-size: 14px;
+      color: rgba(60, 60, 59, 0.75);
+    }
+
+    .article-subline {
+      font-style: italic;
+      color: rgba(60, 60, 59, 0.7);
+    }
+
+    .article-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .json-display {
+      background: var(--color-dark-gray, #3c3c3b);
+      color: var(--color-cyan, #00c8f5);
+      padding: 24px;
+      border-radius: var(--radius-small, 8px);
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      max-height: 420px;
+      overflow: auto;
+    }
+
+    .editor-wrapper {
+      border: 2px solid rgba(60, 60, 59, 0.15);
+      border-radius: var(--radius-small, 8px);
+      background: var(--color-white, #ffffff);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .editor-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+      background: rgba(60, 60, 59, 0.08);
+      border-bottom: 1px solid rgba(60, 60, 59, 0.1);
+    }
+
+    .toolbar-button {
+      border: none;
+      background: var(--color-white, #ffffff);
+      color: var(--color-dark-gray, #3c3c3b);
+      padding: 8px 12px;
+      border-radius: var(--radius-small, 8px);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, color 0.2s;
+    }
+
+    .toolbar-button:hover {
+      background: rgba(218, 47, 106, 0.18);
+      color: var(--color-pink, #da2f6a);
+      transform: translateY(-1px);
+    }
+
+    .toolbar-button:focus-visible {
+      outline: 3px solid rgba(0, 200, 245, 0.35);
+      outline-offset: 1px;
+    }
+
+    .editor-area {
+      min-height: 240px;
+      padding: 16px;
+      line-height: 1.6;
+      font-size: 15px;
+      color: var(--color-dark-gray, #3c3c3b);
+      overflow-y: auto;
+    }
+
+    .editor-area:empty:before {
+      content: attr(data-placeholder);
+      color: rgba(60, 60, 59, 0.4);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .success-message,
+    .error-message {
+      border: none;
+      border-radius: var(--radius-small, 8px);
+      padding: 16px 20px;
+      font-weight: 700;
+    }
+
+    .success-message {
+      background: rgba(0, 255, 116, 0.12);
+      color: #0d8c47;
+    }
+
+    .error-message {
+      background: rgba(255, 87, 87, 0.15);
+      color: #a1112c;
+    }
+
+    @media (max-width: 900px) {
+      .cms-shell {
+        padding: 32px 16px 64px;
+      }
+
+      .cms-container {
+        padding: 32px 20px;
+      }
+
+      .cms-form,
+      .articles-list {
+        padding: 24px;
+      }
+
+      .article-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .article-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .tab-cms {
+        flex: 1 1 auto;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cms-shell">
+    <div class="cms-container">
+      <h1 class="cms-header">SUMO QUBES NEWS CMS</h1>
+  <p class="cms-subheader">Add, update, or remove news in a few clicks. Fill the form, hit save, and your changes show up on the site preview instantly.</p>
+      
+      <div id="message"></div>
+      
+      <div class="tabs-cms">
+        <button class="tab-cms active" data-tab="add" onclick="switchTab('add', this)">Add New Article</button>
+        <button class="tab-cms" data-tab="manage" onclick="switchTab('manage', this)">Manage Articles</button>
+        <button class="tab-cms" data-tab="export" onclick="switchTab('export', this)">Export/Import</button>
+      </div>
+    
+    <!-- Add New Article Tab -->
+    <div id="add-tab" class="tab-content active">
+      <div class="cms-form">
+        <h2>Add New Article</h2>
+        <form id="articleForm">
+          <div class="form-group">
+            <label for="title">Title *</label>
+            <input type="text" id="title" required>
+            <p class="help-text">The main headline for your article</p>
+          </div>
+
+          <div class="form-group">
+            <label for="subheader">Subheader</label>
+            <input type="text" id="subheader" placeholder="Add an optional supporting line">
+            <p class="help-text">A short sentence complements the main title (it appears on the article page).</p>
+          </div>
+          
+          <div class="form-group">
+            <label for="slug">Slug (URL)</label>
+            <input type="text" id="slug">
+            <p class="help-text">Optional - Auto-generated from title if left empty (e.g., my-article-title)</p>
+          </div>
+          
+          <div class="form-group">
+            <label for="date">Date *</label>
+            <input type="date" id="date" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="image">Image Path *</label>
+            <div class="image-input-row">
+              <input type="text" id="image" placeholder="images/news-image1.jpg" required>
+              <div class="image-upload-actions">
+                <input type="file" id="imageUpload" accept="image/*" class="sr-only" aria-hidden="true">
+                <button type="button" class="btn-secondary btn-upload" id="triggerImageUpload">Upload Image</button>
+              </div>
+            </div>
+            <p class="help-text">Use a path in your project or click Upload Image to embed it directly.</p>
+            <img id="imagePreview" class="image-preview" alt="Article image preview">
+          </div>
+          
+          <div class="form-group">
+            <label for="tags">Tags (comma-separated)</label>
+            <input type="text" id="tags" placeholder="Update, Event, Announcement">
+            <p class="help-text">Optional - Separate multiple tags with commas</p>
+          </div>
+          
+          <div class="form-group">
+            <label for="contentEditor">Content *</label>
+            <div class="editor-wrapper">
+              <div class="editor-toolbar" role="toolbar" aria-label="Formatting options">
+                <button type="button" class="toolbar-button" data-editor-command="bold" aria-label="Negrito (⌘+B)"><span>Bold</span></button>
+                <button type="button" class="toolbar-button" data-editor-command="italic" aria-label="Itálico (⌘+I)"><span>Italic</span></button>
+                <button type="button" class="toolbar-button" data-editor-command="underline" aria-label="Sublinhar (⌘+U)"><span>Underline</span></button>
+                <button type="button" class="toolbar-button" data-editor-command="formatBlock" data-editor-value="<h2>" aria-label="Título de seção"><span>H2</span></button>
+                <button type="button" class="toolbar-button" data-editor-command="insertUnorderedList" aria-label="Lista com marcadores"><span>• List</span></button>
+                <button type="button" class="toolbar-button" data-editor-command="insertOrderedList" aria-label="Lista numerada"><span>1. List</span></button>
+                <button type="button" class="toolbar-button" data-editor-command="formatBlock" data-editor-value="<blockquote>" aria-label="Citação"><span>Quote</span></button>
+                <button type="button" class="toolbar-button" data-editor-command="createLink" aria-label="Adicionar link"><span>Link</span></button>
+                <button type="button" class="toolbar-button" data-editor-command="removeFormat" aria-label="Remover formatação"><span>Clear</span></button>
+              </div>
+              <div id="contentEditor" class="editor-area" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Escreva ou cole seu artigo aqui..."></div>
+            </div>
+            <textarea id="content" name="content" class="sr-only" aria-hidden="true"></textarea>
+            <p class="help-text">Use a barra acima para formatar seu texto. Tags HTML continuam valendo para ajustes avançados.</p>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="submitButton">Add Article</button>
+            <button type="button" class="btn-secondary" id="cancelEditBtn">Cancel edit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Manage Articles Tab -->
+    <div id="manage-tab" class="tab-content">
+      <div class="articles-list">
+        <h2>Current Articles</h2>
+        <p class="help-text">Preview opens the live page in a new tab. Edit keeps everything in the form below. Delete removes the story instantly.</p>
+        <div id="articlesList">
+          <p>Loading articles...</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Export/Import Tab -->
+    <div id="export-tab" class="tab-content">
+      <div class="cms-form">
+        <h2>Export Current Data</h2>
+        <p>Copy the JSON below and save it to <code>news-articles.json</code> file:</p>
+        <button class="btn-secondary" onclick="copyJSON()">Copy to Clipboard</button>
+        <button class="btn-secondary" onclick="downloadJSON()">Download JSON File</button>
+        <div class="json-display" id="jsonDisplay">
+          Loading...
+        </div>
+      </div>
+      
+      <div class="cms-form">
+        <h2>Import Data</h2>
+        <div class="form-group">
+          <label for="importJson">Paste JSON Data</label>
+          <textarea id="importJson" placeholder='[{"title": "...", "date": "...", ...}]'></textarea>
+        </div>
+        <button class="btn-primary" onclick="importJSON()">Import Articles</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const STORAGE_KEY = 'sumo_qubes_news';
+  const REMOVED_STORAGE_KEY = 'sumo_qubes_news_removed';
+    function getRemovedSlugs() {
+      try {
+        const stored = localStorage.getItem(REMOVED_STORAGE_KEY);
+        if (!stored) return [];
+        const parsed = JSON.parse(stored);
+        return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+      } catch (error) {
+        console.warn('Unable to read removed slugs:', error);
+        return [];
+      }
+    }
+
+    function persistRemovedSlugs(slugs) {
+      const unique = Array.from(new Set((slugs || []).filter(Boolean)));
+      localStorage.setItem(REMOVED_STORAGE_KEY, JSON.stringify(unique));
+      return unique;
+    }
+
+    function markSlugRemoved(slug) {
+      if (!slug) return;
+      const current = getRemovedSlugs();
+      if (current.includes(slug)) return;
+      current.push(slug);
+      persistRemovedSlugs(current);
+    }
+
+    function unmarkSlugRemoved(slug) {
+      if (!slug) return;
+      const filtered = getRemovedSlugs().filter(item => item !== slug);
+      persistRemovedSlugs(filtered);
+    }
+
+
+    const form = document.getElementById('articleForm');
+    const submitButton = document.getElementById('submitButton');
+    const cancelEditButton = document.getElementById('cancelEditBtn');
+    const titleInput = document.getElementById('title');
+    const subheaderInput = document.getElementById('subheader');
+    const slugInput = document.getElementById('slug');
+    const dateInput = document.getElementById('date');
+    const imageInputField = document.getElementById('image');
+    const imageUploadInput = document.getElementById('imageUpload');
+    const imageUploadButton = document.getElementById('triggerImageUpload');
+    const imagePreviewEl = document.getElementById('imagePreview');
+    const tagsInput = document.getElementById('tags');
+    const hiddenContentInput = document.getElementById('content');
+    const contentEditor = document.getElementById('contentEditor');
+    const editorButtons = Array.from(document.querySelectorAll('.toolbar-button'));
+    const articlesListContainer = document.getElementById('articlesList');
+    const jsonDisplayEl = document.getElementById('jsonDisplay');
+    const messageDiv = document.getElementById('message');
+
+    let editingSlug = null;
+    let slugAutofillEnabled = true;
+
+    function stripHtml(value = '') {
+      return value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function showMessage(message, type = 'success') {
+      if (!messageDiv) return;
+      messageDiv.className = type === 'success' ? 'success-message' : 'error-message';
+      messageDiv.textContent = message;
+      messageDiv.style.display = 'block';
+      window.clearTimeout(showMessage.timeoutId);
+      showMessage.timeoutId = window.setTimeout(() => {
+        messageDiv.style.display = 'none';
+      }, 5000);
+    }
+
+    function generateSlug(title) {
+      const plainTitle = stripHtml(title || '');
+      return plainTitle
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+
+    function getArticleSlug(article) {
+      if (!article) return '';
+      const existing = (article.slug || '').trim();
+      return existing || generateSlug(article.title || '');
+    }
+
+    function formatDisplayDate(dateString) {
+      if (!dateString) return 'No date';
+      const parsed = new Date(dateString);
+      if (Number.isNaN(parsed.getTime())) return dateString;
+      return parsed.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function getArticles() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return [];
+        const parsed = JSON.parse(stored);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        console.warn('Unable to read stored articles:', error);
+        return [];
+      }
+    }
+
+    function persistArticles(articles) {
+      const normalized = (Array.isArray(articles) ? articles : [])
+        .filter(article => article && article.title)
+        .map(article => {
+          const tags = Array.isArray(article.tags)
+            ? article.tags
+            : typeof article.tags === 'string'
+              ? article.tags.split(',').map(tag => tag.trim()).filter(Boolean)
+              : [];
+          return {
+            ...article,
+            slug: getArticleSlug(article),
+            tags
+          };
+        })
+        .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+      return normalized;
+    }
+
+    function getTabButton(tabName) {
+      return document.querySelector(`.tab-cms[data-tab="${tabName}"]`);
+    }
+
+    function switchTab(tabName, button) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-cms').forEach(tabButton => tabButton.classList.remove('active'));
+
+      const targetTab = document.getElementById(`${tabName}-tab`);
+      if (targetTab) {
+        targetTab.classList.add('active');
+      }
+
+      const targetButton = button || getTabButton(tabName);
+      if (targetButton) {
+        targetButton.classList.add('active');
+      }
+
+      if (tabName === 'manage') {
+        renderArticlesList();
+      } else if (tabName === 'export') {
+        renderJsonPreview();
+      }
+    }
+
+    function renderArticlesList() {
+      if (!articlesListContainer) return;
+
+      const articles = getArticles();
+      if (!articles.length) {
+        articlesListContainer.innerHTML = '<p>No articles yet. Use "Add New Article" to publish your first story.</p>';
+        return;
+      }
+
+      articlesListContainer.innerHTML = '';
+      articles.forEach(article => {
+        const slug = getArticleSlug(article);
+        if (!slug) return;
+        const item = document.createElement('div');
+        item.className = 'article-item';
+
+        const info = document.createElement('div');
+        info.className = 'article-info';
+
+  const titleEl = document.createElement('h3');
+  const safeTitle = stripHtml(article.title || '');
+  titleEl.textContent = safeTitle || '(untitled)';
+        info.appendChild(titleEl);
+
+        if (article.subheader) {
+          const subline = document.createElement('p');
+          subline.className = 'article-subline';
+          subline.textContent = article.subheader;
+          info.appendChild(subline);
+        }
+
+  const meta = document.createElement('p');
+  meta.textContent = `Published: ${formatDisplayDate(article.date)} | Slug: ${slug}`;
+        info.appendChild(meta);
+
+        if (article.tags && article.tags.length) {
+          const tagsLine = document.createElement('p');
+          tagsLine.textContent = `Tags: ${article.tags.join(', ')}`;
+          info.appendChild(tagsLine);
+        }
+
+        const actions = document.createElement('div');
+        actions.className = 'article-actions';
+
+        const previewLink = document.createElement('a');
+        previewLink.className = 'btn-secondary';
+        previewLink.textContent = 'Preview';
+        previewLink.href = `article.html?slug=${encodeURIComponent(slug)}`;
+        previewLink.target = '_blank';
+        previewLink.rel = 'noopener';
+        actions.appendChild(previewLink);
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn-secondary';
+        editBtn.textContent = 'Edit';
+        editBtn.addEventListener('click', () => startEditingArticle(slug));
+        actions.appendChild(editBtn);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn-danger';
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.addEventListener('click', () => removeArticle(slug));
+        actions.appendChild(deleteBtn);
+
+        item.appendChild(info);
+        item.appendChild(actions);
+        articlesListContainer.appendChild(item);
+      });
+    }
+
+    function renderJsonPreview() {
+      if (!jsonDisplayEl) return;
+      jsonDisplayEl.textContent = JSON.stringify(getArticles(), null, 2);
+    }
+
+    function resetForm() {
+      if (!form) return;
+      form.reset();
+      if (contentEditor) {
+        contentEditor.innerHTML = '';
+      }
+      if (hiddenContentInput) {
+        hiddenContentInput.value = '';
+      }
+      slugAutofillEnabled = true;
+      resetImagePreview();
+      if (dateInput) {
+        dateInput.valueAsDate = new Date();
+      }
+    }
+
+    function cancelEditing() {
+      editingSlug = null;
+      if (submitButton) {
+        submitButton.textContent = 'Add Article';
+      }
+      if (cancelEditButton) {
+        cancelEditButton.style.display = 'none';
+      }
+      resetForm();
+    }
+
+    function startEditingArticle(slug) {
+      const article = getArticles().find(item => getArticleSlug(item) === slug);
+      if (!article) {
+        showMessage('Unable to find that article.', 'error');
+        return;
+      }
+
+      editingSlug = slug;
+      if (submitButton) {
+        submitButton.textContent = 'Save Changes';
+      }
+      if (cancelEditButton) {
+        cancelEditButton.style.display = 'inline-flex';
+      }
+      slugAutofillEnabled = !article.slug;
+
+      titleInput.value = article.title || '';
+      subheaderInput.value = article.subheader || '';
+      slugInput.value = getArticleSlug(article);
+      dateInput.value = article.date || '';
+      imageInputField.value = article.image || '';
+      tagsInput.value = article.tags && article.tags.length ? article.tags.join(', ') : '';
+
+      const htmlContent = article.content || '';
+      contentEditor.innerHTML = htmlContent;
+      hiddenContentInput.value = htmlContent;
+
+      updateImagePreview(article.image || '');
+
+      switchTab('add');
+      if (titleInput) {
+        titleInput.focus();
+      }
+    }
+
+    function removeArticle(slug) {
+      if (!confirm('Delete this article? This cannot be undone.')) return;
+      const remaining = getArticles().filter(article => getArticleSlug(article) !== slug);
+      persistArticles(remaining);
+      markSlugRemoved(slug);
+      if (editingSlug === slug) {
+        cancelEditing();
+      }
+      renderArticlesList();
+      renderJsonPreview();
+      showMessage('Article deleted successfully! Remember to export JSON when you are ready to publish.');
+    }
+
+    function applyEditorCommand(command, value) {
+      if (!contentEditor) return;
+      contentEditor.focus();
+      const selection = window.getSelection();
+
+      if (command === 'createLink') {
+        if (!selection || selection.isCollapsed) {
+          showMessage('Select the text you want to turn into a link first.', 'error');
+          return;
+        }
+        const url = prompt('Enter the URL', 'https://');
+        if (!url || url === 'https://') return;
+        document.execCommand('createLink', false, url);
+        hiddenContentInput.value = contentEditor.innerHTML.trim();
+        return;
+      }
+
+      if (command === 'formatBlock') {
+        document.execCommand('formatBlock', false, value || 'P');
+        hiddenContentInput.value = contentEditor.innerHTML.trim();
+        return;
+      }
+
+      document.execCommand(command, false, value || null);
+      hiddenContentInput.value = contentEditor.innerHTML.trim();
+    }
+
+    editorButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const command = button.getAttribute('data-editor-command');
+        const value = button.getAttribute('data-editor-value') || undefined;
+        applyEditorCommand(command, value);
+      });
+    });
+
+    if (contentEditor) {
+      contentEditor.addEventListener('input', () => {
+        hiddenContentInput.value = contentEditor.innerHTML.trim();
+      });
+    }
+
+    if (titleInput && slugInput) {
+      titleInput.addEventListener('input', () => {
+        if (!slugAutofillEnabled) return;
+        slugInput.value = generateSlug(titleInput.value);
+      });
+    }
+
+    if (slugInput) {
+      slugInput.addEventListener('input', () => {
+        slugAutofillEnabled = slugInput.value.trim().length === 0;
+      });
+    }
+
+    function updateImagePreview(value) {
+      if (!imagePreviewEl) return;
+      const src = value ? value.trim() : '';
+      if (!src) {
+        imagePreviewEl.style.display = 'none';
+        imagePreviewEl.removeAttribute('src');
+        return;
+      }
+      imagePreviewEl.src = src;
+      imagePreviewEl.style.display = 'block';
+    }
+
+    function resetImagePreview() {
+      updateImagePreview('');
+      if (imageUploadInput) {
+        imageUploadInput.value = '';
+      }
+    }
+
+    function handleSelectedImage(file) {
+      if (!file) return;
+      if (!file.type || !file.type.startsWith('image/')) {
+        showMessage('Please choose a valid image file.', 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = event => {
+        const dataUrl = event.target && event.target.result ? String(event.target.result) : '';
+        if (!dataUrl) {
+          showMessage('Unable to read the selected image.', 'error');
+          return;
+        }
+        imageInputField.value = dataUrl;
+        updateImagePreview(dataUrl);
+        showMessage('Image attached from your device. Remember to export JSON to persist it elsewhere.');
+      };
+      reader.onerror = () => {
+        showMessage('There was a problem reading the image file.', 'error');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    if (imageUploadButton && imageUploadInput) {
+      imageUploadButton.addEventListener('click', () => imageUploadInput.click());
+      imageUploadInput.addEventListener('change', () => {
+        handleSelectedImage(imageUploadInput.files && imageUploadInput.files[0]);
+      });
+    }
+
+    if (imageInputField) {
+      imageInputField.addEventListener('input', () => {
+        updateImagePreview(imageInputField.value);
+      });
+    }
+
+    if (cancelEditButton) {
+      cancelEditButton.addEventListener('click', () => {
+        cancelEditing();
+        showMessage('Edit cancelled. Ready for a new story.');
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+
+        const title = titleInput.value.trim();
+        const subheader = subheaderInput.value.trim();
+        const date = dateInput.value;
+        const image = imageInputField.value.trim();
+        const slugValue = slugInput.value.trim();
+        const tags = tagsInput.value.trim()
+          ? tagsInput.value.split(',').map(tag => tag.trim()).filter(Boolean)
+          : [];
+        const contentHtml = contentEditor.innerHTML.trim();
+        const contentPlain = contentEditor.textContent ? contentEditor.textContent.trim() : '';
+
+        if (!title || !date || !image || !contentPlain) {
+          showMessage('Please fill the required fields: title, date, image, and content.', 'error');
+          return;
+        }
+
+        hiddenContentInput.value = contentHtml;
+        const normalizedSlug = slugValue || generateSlug(title);
+
+        const article = {
+          title,
+          subheader,
+          slug: normalizedSlug,
+          date,
+          image,
+          tags,
+          content: contentHtml
+        };
+
+  const previousSlug = editingSlug;
+        const articles = getArticles().filter(item => getArticleSlug(item) !== (previousSlug || normalizedSlug));
+  articles.unshift(article);
+  persistArticles(articles);
+        if (previousSlug && previousSlug !== normalizedSlug) {
+          markSlugRemoved(previousSlug);
+        }
+        unmarkSlugRemoved(normalizedSlug);
+
+        const isUpdate = Boolean(previousSlug);
+        showMessage(isUpdate ? 'Article updated!' : 'Article added successfully!');
+        cancelEditing();
+        renderArticlesList();
+        renderJsonPreview();
+      });
+    }
+
+    async function initializeData() {
+      const existing = getArticles();
+      if (existing.length) {
+        persistArticles(existing);
+        return;
+      }
+
+      try {
+        const response = await fetch('news-articles.json', { cache: 'no-store' });
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data) && data.length) {
+            persistArticles(data);
+            return;
+          }
+        }
+      } catch (error) {
+        console.warn('Unable to load news-articles.json into the CMS:', error);
+      }
+
+      const sampleData = [
+        {
+          title: 'Season 1 Launch!',
+          subheader: 'New arenas, rewards, and events drop today',
+          slug: 'season-1-launch',
+          date: '2024-11-09',
+          image: 'images/news-image1.jpg',
+          tags: ['Announcement', 'Season'],
+          content: "<p>We're excited to announce the official launch of <strong>Season 1</strong> in SUMO QUBES!</p><p>Get ready for:</p><ul><li>New arenas and challenges</li><li>Exclusive seasonal rewards</li><li>Updated leaderboards</li><li>Special limited-time events</li></ul><p>Jump in now and start your journey to the top of the leaderboard!</p>"
+        }
+      ];
+      persistArticles(sampleData);
+    }
+
+    function copyJSON() {
+      renderJsonPreview();
+      const json = jsonDisplayEl ? jsonDisplayEl.textContent : JSON.stringify(getArticles(), null, 2);
+      if (!navigator.clipboard) {
+        showMessage('Clipboard access is not available in this browser.', 'error');
+        return;
+      }
+      navigator.clipboard.writeText(json).then(() => {
+        showMessage('JSON copied to clipboard!');
+      }).catch(() => {
+        showMessage('Unable to copy JSON. Please copy it manually.', 'error');
+      });
+    }
+
+    function downloadJSON() {
+      const articles = getArticles();
+      const dataStr = JSON.stringify(articles, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'news-articles.json';
+      link.click();
+      URL.revokeObjectURL(url);
+      showMessage('JSON file downloaded!');
+    }
+
+    function importJSON() {
+      const jsonInput = document.getElementById('importJson');
+      if (!jsonInput) return;
+
+      const jsonValue = jsonInput.value.trim();
+      if (!jsonValue) {
+        showMessage('Please paste JSON data first!', 'error');
+        return;
+      }
+
+      try {
+        const articles = JSON.parse(jsonValue);
+        if (!Array.isArray(articles)) {
+          throw new Error('JSON must be an array of articles');
+        }
+        persistArticles(articles);
+        persistRemovedSlugs(
+          getRemovedSlugs().filter(slug => !articles.some(article => getArticleSlug(article) === slug))
+        );
+        renderArticlesList();
+        renderJsonPreview();
+        cancelEditing();
+        jsonInput.value = '';
+        showMessage('Articles imported successfully!');
+      } catch (error) {
+        showMessage('Invalid JSON format: ' + error.message, 'error');
+      }
+    }
+
+    (async function initCMS() {
+      await initializeData();
+      cancelEditing();
+      renderArticlesList();
+      renderJsonPreview();
+    })();
+
+    window.switchTab = switchTab;
+    window.copyJSON = copyJSON;
+    window.downloadJSON = downloadJSON;
+    window.importJSON = importJSON;
+  </script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article - SUMO QUBES</title>
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Preload fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-left">
+      <a href="https://republicoffunltd.com/" target="_blank"><img src="images/rofllogo.png" alt="Republic of Fun LTD"></a>
+      <span>|</span>
+      <a href="index.html"><img src="images/qubeslogo.png" alt="QUBES"></a>
+      <button class="hamburger-menu" onclick="toggleMobileMenu()" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-links">
+        <a href="news.html">News</a>
+        <a href="index.html#leaderboard">Leaderboard</a>
+        <a href="index.html#community">Community</a>
+        <a href="#">Shop</a>
+      </nav>
+    </div>    
+    <div class="nav-right">
+      <div class="user-dropdown">
+        <a href="#" class="user-icon-link"><img src="images/user-icon.png" alt="User Login"></a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item">Login</a>
+          <a href="#" class="dropdown-item">Sign Up</a>
+        </div>
+      </div>
+      <a href="#" class="language-icon-link" onclick="openLanguageModal(event)"><img src="images/language-icon.png" alt="Language Options"></a>
+      <a href="https://sq_250202_01-z1ry306z1huswi-latest.needle.run/#r=RKDL9" target="_blank"><button class="play-button">Play</button></a>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav-overlay" onclick="toggleMobileMenu()"></div>
+  <nav class="mobile-nav-menu">
+    <a href="news.html">News</a>
+    <a href="index.html#leaderboard" onclick="toggleMobileMenu()">Leaderboard</a>
+    <a href="index.html#community" onclick="toggleMobileMenu()">Community</a>
+    <a href="#">Shop</a>
+  </nav>
+
+  <!-- Language Modal -->
+  <div id="languageModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLanguageModal()">&times;</span>
+      <h2>Select Language</h2>
+      <div class="language-grid">
+        <button class="language-option" onclick="changeLanguage('en')">
+          <span class="flag">🇬🇧</span>
+          <span>English</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('es')">
+          <span class="flag">🇪🇸</span>
+          <span>Español</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('fr')">
+          <span class="flag">🇫🇷</span>
+          <span>Français</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('de')">
+          <span class="flag">🇩🇪</span>
+          <span>Deutsch</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('pt')">
+          <span class="flag">🇵🇹</span>
+          <span>Português</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('it')">
+          <span class="flag">🇮🇹</span>
+          <span>Italiano</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main class="article-page">
+    <div class="article-hero">
+      <img id="articleImage" src="images/news-image1.jpg" alt="Article Image">
+    </div>
+    
+    <article class="article-content">
+      <div class="article-meta">
+        <span class="date" id="articleDate">Loading...</span>
+        <div class="tags" id="articleTags">
+          <!-- Tags will be inserted here -->
+        </div>
+      </div>
+      
+      <h1 id="articleTitle">Loading article...</h1>
+      <p id="articleSubheader" class="article-subheader" style="display: none;"></p>
+      
+      <div class="article-body" id="articleBody">
+        <p>Loading content...</p>
+      </div>
+      
+      <div class="article-footer">
+        <a href="news.html" class="btn-back">← Back to News</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="section-divider"></div>
+
+  <section class="cta-section" id="cta">
+    <div class="cta-container">
+      <div class="cta-content">
+        <h2 class="cta-title">READY TO JUMP<br />INTO THE ACTION?</h2>
+        <p class="cta-subtitle">Join thousands of players worldwide<br> in the ultimate cubic battle arena.</p>
+        <a href="https://sq_250202_01-z1ry306z1huswi-latest.needle.run/#r=RKDL9" target="_blank">
+          <button class="cta-play-button">PLAY NOW!</button>
+        </a>
+        <p class="cta-note">Free to play • Available directly from your mobile browser.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="social-icons">
+          <a href="https://www.instagram.com/republicoffunltd/" target="_blank"><img src="images/instagram.png" alt="Instagram"></a>
+          <a href="https://www.youtube.com/@republicoffunltd" target="_blank"><img src="images/youtube.png" alt="YouTube"></a>
+          <a href="https://www.tiktok.com/@republicoffunltd" target="_blank"><img src="images/tiktok.png" alt="TikTok"></a>
+          <a href="https://discord.gg/dDKCuJZM" target="_blank"><img src="images/discord.png" alt="Discord"></a>
+        </div>
+        <div class="site-map">
+          <div class="site-map-column">
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="https://republicoffunltd.com/#team" target="_blank">Creative</a></li>
+              <li><a href="season-archive.html">Season Archive</a></li>
+            </ul>
+          </div>
+          <div class="site-map-column">
+            <ul>
+              <li><a href="fame-pass.html">Fame Pass</a></li>
+              <li><a href="news.html">News</a></li>
+            </ul>
+          </div>
+          <div class="site-map-column">
+            <ul>
+              <li><a href="support.html">Support</a></li>
+              <li><a href="rules.html">Rules & Guidelines</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <img src="images/stamp.png" alt="Studio Stamp" class="studio-stamp">
+        <img src="images/esrb.jpg" alt="ESRB" class="esrd">
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-line"></div>
+      <p>© 2024 Republic of Fun Limited. All rights reserved. The QUBES logo and SUMO QUBES logos and characters are trademarks of Republic of Fun Limited. The ROFL logo is a trademark or registered trademark of Republic of Fun Ltd. in the EU and elsewhere.</p>
+      <div class="footer-menu">
+        <a href="legal.html#terms">Terms of Notice</a>
+        <a href="legal.html#privacy">Privacy Policy</a>
+        <a href="legal.html#safety">Safety & Security</a>
+        <a href="legal.html#cookies">Cookies</a>
+        <a href="legal.html#settings">Settings</a>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-to-top" onclick="scrollToTop()">&#x25B2;</button>
+
+  <script src="scripts.js"></script>
+  <script>
+    const NEWS_STORAGE_KEY = 'sumo_qubes_news';
+
+    function stripHtml(value = '') {
+      return value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function formatTitleHtml(title) {
+      const safe = (title || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return safe.replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+    }
+
+    function getArticleSlug(article) {
+      if (!article) return '';
+      if (article.slug) return article.slug;
+      const plainTitle = stripHtml(article.title || '');
+      return plainTitle
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+
+    function getArticlesFromLocalStorage() {
+      try {
+        const stored = localStorage.getItem(NEWS_STORAGE_KEY);
+        if (!stored) return [];
+        const parsed = JSON.parse(stored);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        console.warn('Unable to read local news articles:', error);
+        return [];
+      }
+    }
+
+    async function getArticlesFromJson() {
+      try {
+        const response = await fetch('news-articles.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const parsed = await response.json();
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        console.warn('Unable to load news-articles.json:', error);
+        return [];
+      }
+    }
+
+    function mergeArticles(primary = [], secondary = []) {
+      const map = new Map();
+      primary.forEach(article => {
+        const slug = getArticleSlug(article);
+        map.set(slug, { ...article, slug });
+      });
+      secondary.forEach(article => {
+        const slug = getArticleSlug(article);
+        if (!slug) return;
+        map.set(slug, { ...article, slug });
+      });
+      return Array.from(map.values());
+    }
+
+    async function getAllArticles() {
+      const [jsonArticles, localArticles] = await Promise.all([
+        getArticlesFromJson(),
+        Promise.resolve(getArticlesFromLocalStorage())
+      ]);
+
+      let combined = mergeArticles(jsonArticles, localArticles);
+
+      if (!combined.length && localArticles.length) {
+        combined = localArticles.map(article => ({ ...article, slug: getArticleSlug(article) }));
+      }
+
+      return combined;
+    }
+
+    // Load article based on URL parameter
+    async function loadArticle() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const slug = urlParams.get('slug');
+      
+      if (!slug) {
+        document.getElementById('articleTitle').textContent = 'Article not found';
+        document.getElementById('articleBody').innerHTML = '<p>No article specified. <a href="news.html">Return to news</a></p>';
+        return;
+      }
+      
+      try {
+        const articles = await getAllArticles();
+        const article = articles.find(a => {
+          const articleSlug = getArticleSlug(a);
+          return articleSlug === slug;
+        });
+        
+        if (!article) {
+          document.getElementById('articleTitle').textContent = 'Article not found';
+          document.getElementById('articleBody').innerHTML = '<p>This article could not be found. <a href="news.html">Return to news</a></p>';
+          return;
+        }
+        
+        // Update page title
+        document.title = `${stripHtml(article.title)} - SUMO QUBES`;
+        
+        // Update article content
+        document.getElementById('articleTitle').innerHTML = formatTitleHtml(article.title);
+        const subheaderEl = document.getElementById('articleSubheader');
+        if (article.subheader) {
+          subheaderEl.textContent = article.subheader;
+          subheaderEl.style.display = 'block';
+        } else {
+          subheaderEl.textContent = '';
+          subheaderEl.style.display = 'none';
+        }
+        document.getElementById('articleImage').src = article.image;
+        document.getElementById('articleImage').alt = stripHtml(article.title);
+        
+        // Format and display date
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = new Date(article.date).toLocaleDateString('en-US', options);
+        document.getElementById('articleDate').textContent = formattedDate;
+        
+        // Display tags if they exist
+        const tagsContainer = document.getElementById('articleTags');
+        if (article.tags && article.tags.length > 0) {
+          tagsContainer.innerHTML = article.tags.map(tag => 
+            `<span class="tag">${tag}</span>`
+          ).join('');
+        } else {
+          tagsContainer.innerHTML = '';
+        }
+        
+        // Display article content
+        document.getElementById('articleBody').innerHTML = article.content || '<p>No content available for this article.</p>';
+        
+      } catch (error) {
+        console.error('Error loading article:', error);
+        document.getElementById('articleTitle').textContent = 'Error loading article';
+        document.getElementById('articleBody').innerHTML = '<p>There was an error loading this article. <a href="news.html">Return to news</a></p>';
+      }
+    }
+    
+    // Load article when page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadArticle);
+    } else {
+      loadArticle();
+    }
+  </script>
+</body>
+</html>

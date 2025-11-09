@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support - SUMO QUBES</title>
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Preload fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-left">
+      <a href="https://republicoffunltd.com/" target="_blank"><img src="images/rofllogo.png" alt="Republic of Fun LTD"></a>
+      <span>|</span>
+      <a href="index.html"><img src="images/qubeslogo.png" alt="QUBES"></a>
+      <button class="hamburger-menu" onclick="toggleMobileMenu()" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-links">
+        <a href="news.html">News</a>
+        <a href="index.html#leaderboard">Leaderboard</a>
+        <a href="index.html#community">Community</a>
+        <a href="#">Shop</a>
+      </nav>
+    </div>    
+    <div class="nav-right">
+      <div class="user-dropdown">
+        <a href="#" class="user-icon-link"><img src="images/user-icon.png" alt="User Login"></a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item">Login</a>
+          <a href="#" class="dropdown-item">Sign Up</a>
+        </div>
+      </div>
+      <a href="#" class="language-icon-link" onclick="openLanguageModal(event)"><img src="images/language-icon.png" alt="Language Options"></a>
+      <a href="https://sq_250202_01-z1ry306z1huswi-latest.needle.run/#r=RKDL9" target="_blank"><button class="play-button">Play</button></a>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav-overlay" onclick="toggleMobileMenu()"></div>
+  <nav class="mobile-nav-menu">
+    <a href="news.html">News</a>
+    <a href="index.html#leaderboard" onclick="toggleMobileMenu()">Leaderboard</a>
+    <a href="index.html#community" onclick="toggleMobileMenu()">Community</a>
+    <a href="#">Shop</a>
+  </nav>
+
+  <!-- Language Modal -->
+  <div id="languageModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLanguageModal()">&times;</span>
+      <h2>Select Language</h2>
+      <div class="language-grid">
+        <button class="language-option" onclick="changeLanguage('en')">
+          <span class="flag">🇬🇧</span>
+          <span>English</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('es')">
+          <span class="flag">🇪🇸</span>
+          <span>Español</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('fr')">
+          <span class="flag">🇫🇷</span>
+          <span>Français</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('de')">
+          <span class="flag">🇩🇪</span>
+          <span>Deutsch</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('pt')">
+          <span class="flag">🇵🇹</span>
+          <span>Português</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('it')">
+          <span class="flag">🇮🇹</span>
+          <span>Italiano</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section class="faq-section footer-overlap">
+      <div class="faq-container">
+        <h2 class="section-header">SUPPORT & FAQ</h2>
+        <p class="faq-intro">Got questions? We've got answers! Check out our frequently asked questions below.</p>
+        
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question">
+              How do I start playing SUMO QUBES?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Simply click the "Play Now" button on our homepage! SUMO QUBES runs directly in your mobile browser - no download required. Just make sure you have a stable internet connection and you're ready to jump into the action!</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <button class="faq-question">
+              What devices can I play on?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>SUMO QUBES is optimized for mobile devices including smartphones and tablets. The game works on both iOS and Android devices through your mobile browser. For the best experience, we recommend using Chrome, Safari, or Firefox on a device with at least 2GB of RAM.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <button class="faq-question">
+              Is SUMO QUBES free to play?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes! SUMO QUBES is completely free to play. We may offer optional cosmetic items or the Fame Pass for players who want to customize their experience, but the core game is free for everyone.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <button class="faq-question">
+              How does the leaderboard work?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>The leaderboard tracks your performance based on wins, eliminations, and match placement. You can view both Global and Local leaderboards. Rankings update in real-time, and you can compete for the top spots each season. Check your rank on the homepage or in your player profile!</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <button class="faq-question">
+              What are seasons and how long do they last?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Seasons are time-limited gameplay periods, typically lasting 2-3 months. Each season brings new content, challenges, rewards, and leaderboard resets. You can check out previous seasons in our Season Archive!</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <button class="faq-question">
+              How do I report a bug or cheater?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>If you encounter a bug, please email us at fun@rofl.ie with a detailed description and screenshots if possible. To report a cheater, use the in-game report function or contact our support team with the player's username and details of the incident. We take all reports seriously!</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <button class="faq-question">
+              Can I play with friends?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes! While the game currently supports solo matches, we're working on adding party features so you can team up with friends. Follow our news section and join our Discord for updates on new features!</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <button class="faq-question">
+              What is the Fame Pass?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>The Fame Pass is a premium seasonal progression system that offers exclusive cosmetics, emotes, and rewards. It's completely optional - you can enjoy the full game without it. Check our Fame Pass page for more details on the current season's rewards!</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <button class="faq-question">
+              I'm having connection issues. What should I do?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>First, check your internet connection and try refreshing the page. Make sure you're on a stable Wi-Fi or mobile data connection. If problems persist, try clearing your browser cache or switching to a different browser. Contact support if issues continue.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <button class="faq-question">
+              How do I change my display name?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>You can change your display name from your account settings once you're logged in. Click on your profile icon in the top right corner, select "Settings," and look for the "Display Name" option. Note that name changes may have a cooldown period.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <button class="faq-question">
+              Where can I find the game controls?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>The game uses simple touch controls optimized for mobile. A tutorial appears the first time you play. You can also access control information in the settings menu during gameplay. The controls are intuitive and easy to learn!</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <button class="faq-question">
+              Can I customize my QUBE character?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes! You can unlock various skins, colors, and accessories as you progress through the game. Some cosmetics are earned through gameplay, while others can be obtained through the Fame Pass or special events.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="support-contact">
+          <h3>Still Need Help?</h3>
+          <p>Can't find what you're looking for? Our support team is here to help!</p>
+          <a href="mailto:fun@rofl.ie" class="btn">Contact Support</a>
+        </div>
+        
+        <div class="discord-community">
+          <h2>Join Our Community</h2>
+          <p>Get help from other players, share tips, and stay updated with the latest news!</p>
+          <a href="https://discord.gg/dDKCuJZM" target="_blank" class="discord-button-wrapper">
+            <button class="discord-join-button">
+              <img src="images/discord_button.png" alt="Discord" class="discord-icon">
+              Join Our Discord
+            </button>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section class="cta-section" id="cta">
+      <div class="cta-container">
+        <div class="cta-content">
+          <h2 class="cta-title">READY TO JUMP<br />INTO THE ACTION?</h2>
+          <p class="cta-subtitle">Join thousands of players worldwide<br> in the ultimate cubic battle arena.</p>
+          <a href="https://sq_250202_01-z1ry306z1huswi-latest.needle.run/#r=RKDL9" target="_blank">
+            <button class="cta-play-button">PLAY NOW!</button>
+          </a>
+          <p class="cta-note">Free to play • Available directly from your mobile browser.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="social-icons">
+          <a href="https://www.instagram.com/republicoffunltd/" target="_blank"><img src="images/instagram.png" alt="Instagram"></a>
+          <a href="https://www.youtube.com/@republicoffunltd" target="_blank"><img src="images/youtube.png" alt="YouTube"></a>
+          <a href="https://www.tiktok.com/@republicoffunltd" target="_blank"><img src="images/tiktok.png" alt="TikTok"></a>
+          <a href="https://discord.gg/dDKCuJZM" target="_blank"><img src="images/discord.png" alt="Discord"></a>
+        </div>
+        <div class="site-map">
+          <div class="site-map-column">
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="https://republicoffunltd.com/#team" target="_blank">Creative</a></li>
+              <li><a href="season-archive.html">Season Archive</a></li>
+            </ul>
+          </div>
+          <div class="site-map-column">
+            <ul>
+              <li><a href="fame-pass.html">Fame Pass</a></li>
+              <li><a href="news.html">News</a></li>
+            </ul>
+          </div>
+          <div class="site-map-column">
+            <ul>
+              <li><a href="support.html">Support</a></li>
+              <li><a href="rules.html">Rules & Guidelines</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <img src="images/stamp.png" alt="Studio Stamp" class="studio-stamp">
+        <img src="images/esrb.jpg" alt="ESRB" class="esrd">
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-line"></div>
+      <p>© 2024 Republic of Fun Limited. All rights reserved. The QUBES logo and SUMO QUBES logos and characters are trademarks of Republic of Fun Limited. The ROFL logo is a trademark or registered trademark of Republic of Fun Ltd. in the EU and elsewhere.</p>
+      <div class="footer-menu">
+        <a href="legal.html#terms">Terms of Notice</a>
+        <a href="legal.html#privacy">Privacy Policy</a>
+        <a href="legal.html#safety">Safety & Security</a>
+        <a href="legal.html#cookies">Cookies</a>
+        <a href="legal.html#settings">Settings</a>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-to-top" onclick="scrollToTop()">&#x25B2;</button>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

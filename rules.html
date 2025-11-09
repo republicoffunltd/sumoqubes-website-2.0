@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rules & Guidelines - SUMO QUBES</title>
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Preload fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-left">
+      <a href="https://republicoffunltd.com/" target="_blank"><img src="images/rofllogo.png" alt="Republic of Fun LTD"></a>
+      <span>|</span>
+      <a href="index.html"><img src="images/qubeslogo.png" alt="QUBES"></a>
+      <button class="hamburger-menu" onclick="toggleMobileMenu()" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-links">
+        <a href="news.html">News</a>
+        <a href="index.html#leaderboard">Leaderboard</a>
+        <a href="index.html#community">Community</a>
+        <a href="#">Shop</a>
+      </nav>
+    </div>    
+    <div class="nav-right">
+      <div class="user-dropdown">
+        <a href="#" class="user-icon-link"><img src="images/user-icon.png" alt="User Login"></a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item">Login</a>
+          <a href="#" class="dropdown-item">Sign Up</a>
+        </div>
+      </div>
+      <a href="#" class="language-icon-link" onclick="openLanguageModal(event)"><img src="images/language-icon.png" alt="Language Options"></a>
+      <a href="https://sq_250202_01-z1ry306z1huswi-latest.needle.run/#r=RKDL9" target="_blank"><button class="play-button">Play</button></a>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav-overlay" onclick="toggleMobileMenu()"></div>
+  <nav class="mobile-nav-menu">
+    <a href="news.html">News</a>
+    <a href="index.html#leaderboard" onclick="toggleMobileMenu()">Leaderboard</a>
+    <a href="index.html#community" onclick="toggleMobileMenu()">Community</a>
+    <a href="#">Shop</a>
+  </nav>
+
+  <!-- Language Modal -->
+  <div id="languageModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLanguageModal()">&times;</span>
+      <h2>Select Language</h2>
+      <div class="language-grid">
+        <button class="language-option" onclick="changeLanguage('en')">
+          <span class="flag">🇬🇧</span>
+          <span>English</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('es')">
+          <span class="flag">🇪🇸</span>
+          <span>Español</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('fr')">
+          <span class="flag">🇫🇷</span>
+          <span>Français</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('de')">
+          <span class="flag">🇩🇪</span>
+          <span>Deutsch</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('pt')">
+          <span class="flag">🇵🇹</span>
+          <span>Português</span>
+        </button>
+        <button class="language-option" onclick="changeLanguage('it')">
+          <span class="flag">🇮🇹</span>
+          <span>Italiano</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section class="rules-section footer-overlap">
+      <div class="rules-container">
+        <h2 class="section-header">RULES & GUIDELINES</h2>
+        <p class="rules-intro">Welcome to SUMO QUBES! To keep our community fun and fair for everyone, please follow these simple rules.</p>
+        
+        <div class="rules-content">
+          <div class="rule-category">
+            <h2>General Conduct</h2>
+            
+            <div class="rule-item">
+              <h3>Be Respectful</h3>
+              <p>Treat all players with respect. No harassment, bullying, hate speech, or discriminatory language will be tolerated.</p>
+            </div>
+            
+            <div class="rule-item">
+              <h3>Fair Play</h3>
+              <p>Play fairly and honestly. Do not use cheats, hacks, exploits, or any unauthorized third-party software.</p>
+            </div>
+            
+            <div class="rule-item">
+              <h3>Keep It Clean</h3>
+              <p>No profanity, inappropriate content, or offensive usernames. Keep the game family-friendly.</p>
+            </div>
+          </div>
+          
+          <div class="rule-category">
+            <h2>Gameplay Rules</h2>
+            
+            <div class="rule-item">
+              <h3>No Cheating</h3>
+              <p>Using any form of cheats, bots, or exploits will result in immediate account suspension or permanent ban.</p>
+              <ul>
+                <li>No automation tools or macros</li>
+                <li>No exploiting game bugs or glitches</li>
+                <li>No account sharing or boosting</li>
+              </ul>
+            </div>
+            
+            <div class="rule-item">
+              <h3>Teaming & Collaboration</h3>
+              <p>In solo game modes, teaming with other players is not allowed. Play as intended for the game mode.</p>
+            </div>
+            
+            <div class="rule-item">
+              <h3>AFK & Griefing</h3>
+              <p>Don't go AFK (away from keyboard) during matches. Don't intentionally ruin the game experience for others.</p>
+            </div>
+          </div>
+          
+          <div class="rule-category">
+            <h2>Communication</h2>
+            
+            <div class="rule-item">
+              <h3>Chat Guidelines</h3>
+              <p>Use in-game chat responsibly:</p>
+              <ul>
+                <li>No spam or repetitive messages</li>
+                <li>No advertising or self-promotion</li>
+                <li>No sharing personal information</li>
+                <li>No impersonating staff or other players</li>
+              </ul>
+            </div>
+            
+            <div class="rule-item">
+              <h3>Reporting Issues</h3>
+              <p>If you encounter bugs, cheaters, or inappropriate behavior, report them through our official channels. False reports may result in penalties.</p>
+            </div>
+          </div>
+          
+          <div class="rule-category">
+            <h2>Account Security</h2>
+            
+            <div class="rule-item">
+              <h3>Protect Your Account</h3>
+              <p>You are responsible for keeping your account secure. Don't share your password or account details with anyone.</p>
+            </div>
+            
+            <div class="rule-item">
+              <h3>One Account Per Player</h3>
+              <p>Each player should only have one active account. Multiple accounts (smurfing) may be restricted.</p>
+            </div>
+          </div>
+          
+          <div class="rule-category">
+            <h2>Consequences</h2>
+            
+            <div class="rule-item">
+              <h3>Warning System</h3>
+              <p>Minor violations may result in warnings. Repeated violations will lead to:</p>
+              <ul>
+                <li>Temporary chat restrictions</li>
+                <li>Temporary account suspension (3-30 days)</li>
+                <li>Permanent account ban</li>
+              </ul>
+            </div>
+            
+            <div class="rule-item">
+              <h3>Appeals</h3>
+              <p>If you believe you were banned unfairly, you can submit an appeal through our support system. Appeals are reviewed on a case-by-case basis.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="rules-footer">
+          <p><strong>Remember:</strong> These rules are here to make SUMO QUBES fun for everyone. By playing, you agree to follow these guidelines.</p>
+          <p>Rules are subject to change. We'll notify players of any major updates.</p>
+          <p>Questions? Contact us at <a href="mailto:fun@rofl.ie">fun@rofl.ie</a> or visit our <a href="support.html">Support page</a>.</p>
+        </div>
+        
+        <div class="discord-community">
+          <h2>Join Our Community</h2>
+          <p>Connect with other players, get help, and stay updated with the latest news!</p>
+          <a href="https://discord.gg/dDKCuJZM" target="_blank" class="discord-button-wrapper">
+            <button class="discord-join-button">
+              <img src="images/discord_button.png" alt="Discord" class="discord-icon">
+              Join Our Discord
+            </button>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section class="cta-section" id="cta">
+      <div class="cta-container">
+        <div class="cta-content">
+          <h2 class="cta-title">READY TO JUMP<br />INTO THE ACTION?</h2>
+          <p class="cta-subtitle">Join thousands of players worldwide<br> in the ultimate cubic battle arena.</p>
+          <a href="https://sq_250202_01-z1ry306z1huswi-latest.needle.run/#r=RKDL9" target="_blank">
+            <button class="cta-play-button">PLAY NOW!</button>
+          </a>
+          <p class="cta-note">Free to play • Available directly from your mobile browser.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="social-icons">
+          <a href="https://www.instagram.com/republicoffunltd/" target="_blank"><img src="images/instagram.png" alt="Instagram"></a>
+          <a href="https://www.youtube.com/@republicoffunltd" target="_blank"><img src="images/youtube.png" alt="YouTube"></a>
+          <a href="https://www.tiktok.com/@republicoffunltd" target="_blank"><img src="images/tiktok.png" alt="TikTok"></a>
+          <a href="https://discord.gg/dDKCuJZM" target="_blank"><img src="images/discord.png" alt="Discord"></a>
+        </div>
+        <div class="site-map">
+          <div class="site-map-column">
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="https://republicoffunltd.com/#team" target="_blank">Creative</a></li>
+              <li><a href="season-archive.html">Season Archive</a></li>
+            </ul>
+          </div>
+          <div class="site-map-column">
+            <ul>
+              <li><a href="fame-pass.html">Fame Pass</a></li>
+              <li><a href="news.html">News</a></li>
+            </ul>
+          </div>
+          <div class="site-map-column">
+            <ul>
+              <li><a href="support.html">Support</a></li>
+              <li><a href="rules.html">Rules & Guidelines</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <img src="images/stamp.png" alt="Studio Stamp" class="studio-stamp">
+        <img src="images/esrb.jpg" alt="ESRB" class="esrd">
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-line"></div>
+      <p>© 2024 Republic of Fun Limited. All rights reserved. The QUBES logo and SUMO QUBES logos and characters are trademarks of Republic of Fun Limited. The ROFL logo is a trademark or registered trademark of Republic of Fun Ltd. in the EU and elsewhere.</p>
+      <div class="footer-menu">
+        <a href="legal.html#terms">Terms of Notice</a>
+        <a href="legal.html#privacy">Privacy Policy</a>
+        <a href="legal.html#safety">Safety & Security</a>
+        <a href="legal.html#cookies">Cookies</a>
+        <a href="legal.html#settings">Settings</a>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-to-top" onclick="scrollToTop()">&#x25B2;</button>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
