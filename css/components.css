@@ -504,9 +504,26 @@
   align-items: center;
 }
 
+.leaderboard-container {
+  background: none; /* or match your page's background */
+  margin: 0;
+  padding: 0;
+  /* width: 100%; */
+  height: 100%;
+  /* Remove any black background here */
+}
+
+.leaderboard-iframe {
+  background: #f94802; /* Ensures no black background */
+  border: none;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .leaderboard h2 {
     text-shadow: -4px -4px 0 rgba(0,0,0,0.2),
-        4px -4px 0 #f94802,
+        4px -4px 0 ,
         -4px 4px 0 #f94802,
         10px 10px 0 #f94802,
         -4px 0 0 #f94802,
@@ -518,14 +535,14 @@
 
 .leaderboard-wrapper {
     display: flex;
-    max-width: 1600px;
+    max-width: 1200px;
     width: 100%;
-    gap: 50px;
+    gap: 25px;
     justify-content: space-between;
 }
 
 .leaderboard-left {
-    flex: 0 0 60%;
+    flex: 0 0 40%;
     display: flex;
     justify-content: center;
     align-items: center;
