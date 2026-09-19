@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SumoQubes — Pitch to Entity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Luckiest+Guy&family=Titan+One&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#3c3c3b;
+    --paper:#ffffff;
+    --pink:#da2f6a;
+    --pink-dark:#a3204e;
+    --cyan:#00c8f5;
+    --cyan2:#00d4ff;
+    --cyan-deep:#00a8cc;
+    --yellow:#f5d547;
+    --gold:#ffd700;
+    --orange:#ff8e00;
+    --orange-dark:#f94802;
+    --purple:#8b3fbf;
+    --purple-light:#8e4cdc;
+    --green:#00ff74;
+    --blue:#3f8bee;
+    --sand:#f5e6b3;
+    --page-two-image-max-width:760px;
+    --image-scale:1.3;
+    --roster-center-image-size:221px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:'Inter', system-ui, sans-serif;
+    overflow:hidden;
+    position:relative;
+    background-color:var(--pink);
+    background-image:
+      radial-gradient(circle, rgba(0,0,0,.10) 2px, transparent 2px),
+      radial-gradient(circle, rgba(255,255,255,.10) 2px, transparent 2px);
+    background-size:14px 14px;
+    background-position:0 0, 7px 7px;
+  }
+  .display{font-family:'Titan One', 'Arial Black', sans-serif; font-weight:400;}
+
+  /* ---- halftone background utilities (built in CSS, per SQ-BR's own pattern) ---- */
+  .bg-yellow{ background: radial-gradient(circle, rgba(255,255,255,0.45) 1.5px, transparent 1.5px) 0 0/14px 14px, linear-gradient(165deg,#fce27a 0%, #f5d547 55%, #ffbf3d 100%); }
+  .bg-pink{   background: radial-gradient(circle, rgba(255,255,255,0.28) 1.5px, transparent 1.5px) 0 0/14px 14px, linear-gradient(165deg,#ef5c93 0%, #da2f6a 60%, #a3204e 100%); }
+  .bg-cyan{   background: radial-gradient(circle, rgba(255,255,255,0.4) 1.5px, transparent 1.5px) 0 0/14px 14px, linear-gradient(165deg,#3fe0ff 0%, #00c8f5 55%, #00a8cc 100%); }
+  .bg-teal{   background: radial-gradient(circle, rgba(0,0,0,0.09) 2px, transparent 2px) 0 0/11px 11px, linear-gradient(150deg,#9feddf 0%, #7fdcce 45%, #4fb9ab 100%); }
+  .bg-cream{  background: radial-gradient(circle, rgba(0,0,0,0.06) 1.5px, transparent 1.5px) 0 0/14px 14px, linear-gradient(165deg,#fffaef 0%, #fbf1d2 100%); }
+  .bg-purple{ background: radial-gradient(circle, rgba(255,255,255,0.3) 1.5px, transparent 1.5px) 0 0/14px 14px, linear-gradient(165deg,#a763e0 0%, #8b3fbf 60%, #632a8a 100%); }
+
+  /* ---- comic outline text (exact technique from SQ-BR's own leaderboard.css) ---- */
+  .outline{
+    color:#fff;
+    text-shadow:
+      -3px -3px 0 var(--stroke,var(--orange)),
+       3px -3px 0 var(--stroke,var(--orange)),
+      -3px  3px 0 var(--stroke,var(--orange)),
+       3px  3px 0 var(--stroke,var(--orange)),
+       6px 6px 14px rgba(0,0,0,0.35);
+  }
+  .outline-thin{
+    color:#fff;
+    text-shadow:
+      -2px -2px 0 var(--stroke,var(--orange)),
+       2px -2px 0 var(--stroke,var(--orange)),
+      -2px  2px 0 var(--stroke,var(--orange)),
+       2px  2px 0 var(--stroke,var(--orange)),
+       3px 3px 8px rgba(0,0,0,0.3);
+  }
+
+  .deck{
+    position:relative;
+    width:min(calc(100vw - 40px), 1120px);
+    height:calc(100vh - 40px);
+    margin:20px auto;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 14px 34px rgba(0,0,0,0.3);
+  }
+  .slide{
+    position:absolute; inset:0; display:none; flex-direction:column;
+    padding:clamp(28px,5.5vh,64px) clamp(24px,6.5vw,72px) clamp(56px,8vh,88px);
+    overflow:hidden;
+  }
+  .slide.active{display:flex;}
+  .slide img{transform:scale(var(--image-scale));}
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; align-self:flex-start;
+    background:rgba(255,255,255,0.92);
+    border-radius:999px; padding:6px 16px 6px 10px;
+    font-size:11.5px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--ink); margin-bottom:auto;
+    box-shadow:0 3px 10px rgba(0,0,0,0.15);
+  }
+  .eyebrow .num{
+    width:20px;height:20px;border-radius:50%;
+    background:var(--eb,var(--pink)); color:#fff; font-weight:800; font-size:10.5px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  .slide-body{flex:1; display:flex; flex-direction:column; justify-content:center; min-height:0;}
+
+  .cover-layout{display:flex; flex:1; flex-direction:column; align-items:center; justify-content:space-between; min-height:0; text-align:center; padding:2vh 0 1vh;}
+  .cover-heading{display:flex; flex-direction:column; align-items:center;}
+  .cover-heading .cover-mark{margin-bottom:10px;}
+  .cover-heading .lede{max-width:38ch;}
+  .cover-image{display:flex; align-items:center; justify-content:center; flex:1; min-height:0; width:100%;}
+  .cover-image img{width:min(35vh,300px); max-height:34vh; object-fit:contain;}
+  .cover-layout .prepared-for{justify-content:center; margin-top:1.5vh;}
+
+  h1.headline{ font-size:clamp(36px,5.6vw,80px); line-height:1.0; text-transform:uppercase; letter-spacing:0.5px; }
+  h2.headline{ font-size:clamp(24px,3.2vw,42px); line-height:1.05; text-transform:uppercase; margin-bottom:.5em; letter-spacing:0.5px; }
+  .lede{ font-size:clamp(15px,1.4vw,19px); line-height:1.55; font-weight:600; max-width:56ch; color:var(--ink); }
+  .lede.light{ color:rgba(255,255,255,0.92); font-weight:600; }
+
+  .card{
+    background:rgba(255,255,255,0.96);
+    border:3px solid #fff;
+    border-radius:20px;
+    padding:20px 22px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.18);
+    color:var(--ink);
+  }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; width:fit-content;
+    font-family:'Titan One'; font-size:14px; letter-spacing:0.02em; text-transform:uppercase;
+    color:#fff; text-shadow:2px 2px 4px rgba(0,0,0,0.35);
+    background:var(--btn-bg,var(--pink));
+    border:none; border-bottom:5px solid var(--btn-border,var(--pink-dark));
+    border-radius:16px; padding:13px 24px; cursor:pointer; text-decoration:none;
+    transition: transform .12s ease, border-bottom-width .12s ease;
+  }
+  .btn:active{ transform:translateY(3px); border-bottom-width:2px; }
+
+  .foot{
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    padding-top:16px; margin-top:auto; color:rgba(255,255,255,0.85);
+  }
+  .foot.dark{ color:rgba(60,60,59,0.55); }
+  .foot .studio{display:flex;align-items:center;gap:8px;}
+  .foot .sq{width:9px;height:9px;background:#fff; border-radius:3px; transform:rotate(45deg);}
+  .foot.dark .sq{background:var(--pink);}
+  .bg-yellow .foot,
+  .bg-cyan .foot,
+  .bg-teal .foot,
+  .bg-cream .foot{color:rgba(60,60,59,0.82);}
+  .bg-yellow .foot .sq,
+  .bg-cyan .foot .sq,
+  .bg-teal .foot .sq,
+  .bg-cream .foot .sq{background:var(--ink);}
+  .bg-pink .foot,
+  .bg-purple .foot{color:rgba(255,255,255,0.92);}
+
+  .nav{
+    position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+    z-index:20; display:flex; align-items:center; gap:12px;
+    background:rgba(255,255,255,0.95);
+    border-radius:999px; padding:7px 9px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.25);
+  }
+  .nav button{
+    width:34px;height:34px;border-radius:50%;border:none;
+    background:var(--sand); color:var(--ink); font-size:16px; cursor:pointer;
+    display:flex;align-items:center;justify-content:center; font-weight:800;
+    transition:transform .15s ease, background .15s ease, color .15s ease;
+  }
+  .nav button:hover{background:var(--pink); color:#fff; transform:scale(1.08);}
+  .dots{display:flex; gap:6px; padding:0 4px;}
+  .dots span{width:6px;height:6px;border-radius:50%;background:#e2d9b8; transition:all .2s ease;}
+  .dots span.on{background:var(--pink); width:18px; border-radius:4px;}
+
+  /* splat device — decorative accent, sits behind content, never blocks it */
+  .splat-wrap{ position:absolute; z-index:-1; pointer-events:none; }
+  .splat-wrap svg{ display:block; width:44vmin; height:44vmin; }
+
+  /* pillars */
+  .pillars{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:5vh; }
+  .pillar{ }
+  .pillar .tag{
+    display:inline-block; font-size:11px; font-weight:800; letter-spacing:.09em;
+    color:#fff; text-transform:uppercase; margin-bottom:10px;
+    background:var(--tagbg,var(--cyan)); padding:4px 10px; border-radius:999px;
+  }
+  .pillar h3{font-size:18px; margin-bottom:8px; text-transform:none; font-weight:800;}
+  .pillar p{font-size:13px; color:#5c5850; line-height:1.5;}
+  .pillar .maps{
+    margin-top:12px; padding-top:10px; border-top:2px dashed #e5dcc0;
+    font-size:11px; font-weight:800; color:var(--pink-dark); text-transform:uppercase; letter-spacing:.04em;
+  }
+
+  /* loop */
+  .loop{display:flex; gap:14px; margin-top:4.5vh; flex-wrap:wrap;}
+  .loop-step{ flex:1; min-width:150px; }
+  .loop-step .k{font-family:'Titan One'; font-size:26px; color:var(--pink);}
+  .loop-step h4{font-size:14.5px; margin:6px 0 6px 0; text-transform:uppercase; font-weight:800;}
+  .loop-step p{font-size:12.5px; color:#5c5850; line-height:1.45;}
+  .social-slide .loop{flex-direction:column;}
+  .social-slide #jinxSpreadImg{width:min(26vh,190px) !important; transform:translateY(-22px) scale(var(--image-scale)); transform-origin:top center;}
+  .studio-slide #roflImg{width:min(32vh,260px) !important; transform:translateY(-32px) scale(var(--image-scale)); transform-origin:center;}
+  .ask-slide .ask-grid{grid-template-columns:1fr;}
+  .ask-slide #spiceAskImg{width:min(26vh,190px) !important;}
+
+  /* facts */
+  .facts{display:flex; gap:14px; margin-top:4.5vh; flex-wrap:wrap;}
+  .fact{ background:rgba(255,255,255,0.95); border-radius:16px; padding:14px 20px; min-width:130px; box-shadow:0 6px 16px rgba(0,0,0,0.15);}
+  .fact .v{font-family:'Titan One'; font-size:clamp(24px,2.6vw,32px); color:var(--pink);}
+  .fact .l{font-size:10.5px; font-weight:800; color:#5c5850; letter-spacing:.06em; text-transform:uppercase; margin-top:2px;}
+
+  /* roster */
+  .roster-wrap{position:relative; flex:1; display:flex; align-items:center; justify-content:center;}
+  .roster-ring{position:relative; width:100%; height:100%;}
+  .cube-card{ position:absolute; width:160px; text-align:center; transform:translate(-50%,-50%); }
+  .cube-card .portrait{
+    width:130px; height:130px; border-radius:24px; overflow:hidden;
+    border:4px solid var(--card-color,#fff); background:#fff;
+    margin:0 auto 8px auto; box-shadow:0 10px 20px rgba(0,0,0,0.25);
+  }
+  .cube-card .portrait img{width:100%; height:100%; object-fit:cover; display:block; transform:none;}
+  .roster-slide .name{font-family:'Luckiest Guy', cursive; font-size:22px; color:#fff; text-shadow:2px 2px 0 #000, -1px -1px 0 rgba(0,0,0,0.8);}
+  .roster-slide .tagline{font-size:11px; color:var(--ink); text-shadow:none;}
+  .roster-center{ position:absolute; top:57%; left:50%; transform:translate(-50%,-50%); text-align:center; width:150px; }
+  .roster-center img{width:var(--roster-center-image-size) !important; transform:none;}
+  .roster-center .n{font-family:'Titan One'; font-size:36px; color:#fff;}
+  .roster-center .l{font-size:10.5px; font-weight:800; letter-spacing:.1em; color:rgba(255,255,255,0.9); text-transform:uppercase;}
+
+  /* team */
+  .team{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:4.5vh;}
+  .member{ }
+  .member .role{font-size:10.5px; font-weight:800; letter-spacing:.08em; color:var(--pink-dark); text-transform:uppercase;}
+  .member h3{font-size:19px; margin:6px 0 6px 0; font-weight:800;}
+  .member p{font-size:12.5px; color:#5c5850; line-height:1.5;}
+
+  /* roadmap */
+  .road{display:flex; flex-direction:column; margin-top:4vh;}
+  .road-row{display:grid; grid-template-columns:118px 1fr; gap:18px; padding:14px 18px; border-radius:14px; margin-bottom:8px;}
+  .road-row .state{font-size:10.5px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; padding-top:2px;}
+  .state.done{color:#0a8a5c;}
+  .state.progress{color:var(--orange-dark);}
+  .state.next{color:#8a8272;}
+  .road-row h4{font-size:15px; text-transform:none; margin-bottom:3px; font-weight:800;}
+  .road-row p{font-size:12.5px; color:#5c5850; line-height:1.5;}
+
+  /* ask */
+  .ask-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:4.5vh;}
+  .ask-item{ display:flex; gap:12px; align-items:flex-start; }
+  .ask-item .mark{
+    width:30px; height:30px; border-radius:10px; flex-shrink:0;
+    background:var(--pink); color:#fff; font-family:'Titan One'; font-size:15px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .ask-item h4{font-size:13.5px; text-transform:uppercase; margin-bottom:4px; font-weight:800;}
+  .ask-item p{font-size:12px; color:#5c5850; line-height:1.4;}
+
+  /* cover */
+  .cover-mark{display:flex; align-items:center; gap:16px; margin-bottom:20px;}
+  .cover-cube{
+    width:54px; height:54px; background:var(--pink); border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Titan One'; font-size:26px; color:#fff;
+    border:3px solid #fff; box-shadow:0 8px 18px rgba(163,32,78,0.4);
+  }
+  .cover-sub{font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,0.85);}
+  .prepared-for{margin-top:5vh; display:flex; gap:16px; flex-wrap:wrap;}
+  .pf-chip{background:rgba(255,255,255,0.95); border-radius:14px; padding:10px 18px;}
+  .pf-chip .b{font-size:10px; font-weight:800; color:#8a8272; letter-spacing:.08em; text-transform:uppercase; margin-bottom:3px;}
+  .pf-chip .v{font-size:15.5px; font-weight:800; color:var(--ink);}
+
+  @media (max-width: 860px){
+    .deck{width:calc(100vw - 20px); height:calc(100vh - 20px); margin:10px auto; border-radius:18px;}
+    .pillars{grid-template-columns:1fr;}
+    .team{grid-template-columns:1fr;}
+    .ask-grid{grid-template-columns:1fr;}
+    .roster-ring{width:100%; height:100%;}
+    .cube-card{width:130px;}
+    .cube-card .portrait{width:96px;height:96px;}
+    .cover-grid{grid-template-columns:1fr !important;}
+    .studio-grid{grid-template-columns:1fr !important;}
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck"><!-- 1 : COVER -->
+<section class="slide active bg-yellow">
+<div class="splat-wrap" style="top: -8vh; right: -10vw; opacity: 0.85;"><svg viewBox="0 0 400 400"><path fill="#000" opacity="0.08" d="M200 20c18 0 22 28 40 30 20 2 40-14 54 0 14 14-4 32 4 50 8 18 34 20 34 40s-26 22-34 40c-8 18 10 36-4 50-14 14-34-2-54 0-18 2-22 30-40 30s-22-28-40-30c-20-2-40 14-54 0-14-14 4-32-4-50-8-18-34-20-34-40s26-22 34-40c8-18-10-36 4-50 14-14 34 2 54 0 18-2 22-30 40-30Z"></path></svg></div>
+<div class="eyebrow" style="--eb: var(--pink);"><span class="num">01</span> PITCH DECK</div>
+<div class="slide-body">
+<div class="cover-layout">
+<div class="cover-heading">
+<div class="cover-mark">
+<div class="cover-cube">Q</div>
+<div class="cover-sub">Republic of Fun Ltd.</div>
+</div>
+<h2 class="display headline outline" style="--stroke: var(--cyan-deep); font-size: clamp(18px,2vw,26px);">Battle Royale</h2>
+<p class="lede" style="margin-top: 10px; font-size: clamp(15px,1.7vw,19px); font-weight: bold;"><span style="background-color: #fbeeb8;">A physics battle royale played in a browser tab. Four cubes, one ring, last one standing.</span></p>
+</div>
+<div class="cover-image"><img id="markImg" src="img/mark.jpg" alt="SumoQubes" style="height: auto; border-radius: 28px; box-shadow: 0 16px 36px rgba(0,0,0,0.28); border: 4px solid #fff;"></div>
+<div class="prepared-for">
+<div class="pf-chip">
+<div class="b">Prepared for</div>
+<div class="v">Entity Games</div>
+</div>
+<div class="pf-chip">
+<div class="b">From</div>
+<div class="v">Republic of Fun Ltd.</div>
+</div>
+<div class="pf-chip">
+<div class="b">Dev codename</div>
+<div class="v">SQ-BR</div>
+</div>
+</div>
+</div>
+</div>
+<div class="foot">
+<div class="studio"><span class="sq"></span> sumoqubes.com</div>
+<div>republicoffunltd.com</div>
+</div>
+</section>
+<!-- 2 : HOOK -->
+<section class="slide bg-pink">
+<div class="eyebrow" style="--eb: var(--yellow);"><span class="num" style="color: var(--ink);">02</span> THE HOOK</div>
+<div class="slide-body">
+<div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 5vw; align-items: center;">
+<div>
+<h1 class="display headline outline" style="--stroke: var(--purple);">Four cubes<br>walk into a ring.</h1>
+<h1 class="display headline outline" style="--stroke: var(--orange-dark); margin-top: 6px;">One walks out.</h1>
+<p class="lede light" style="margin-top: 24px; font-size: clamp(15px,1.6vw,19px);">SumoQubes is a physics-based sumo brawler &mdash; push, dodge and grab-and-throw opponents off a circular platform. No health bars, no gear grind. Just mass, momentum, and the edge of the ring.</p>
+</div>
+<img id="heroesHookImg" alt="SumoQubes cast collision" style="width: 125%; max-width: var(--page-two-image-max-width); height: auto; justify-self: center; filter: drop-shadow(0 14px 26px rgba(0,0,0,0.4));"></div>
+<div class="facts">
+<div class="fact">
+<div class="v">4</div>
+<div class="l">Players / ring</div>
+</div>
+<div class="fact">
+<div class="v">~3 min</div>
+<div class="l">Per session</div>
+</div>
+<div class="fact">
+<div class="v">0</div>
+<div class="l">Installs required</div>
+</div>
+<div class="fact">
+<div class="v">7</div>
+<div class="l">Characters, fully modeled</div>
+</div>
+</div>
+</div>
+<div class="foot">
+<div class="studio"><span class="sq"></span> SumoQubes</div>
+<div>Republic of Fun Ltd.</div>
+</div>
+</section>
+<!-- 3 : WHAT IT IS -->
+<section class="slide bg-cyan">
+<div class="eyebrow" style="--eb: var(--pink);"><span class="num">03</span> WHAT IT IS</div>
+<div class="slide-body">
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 5vw; align-items: start;">
+<div>
+<h2 class="display headline outline" style="--stroke: var(--pink-dark);">The core loop</h2>
+<p class="lede light" style="margin-bottom: 2vh;">Mobile-first, browser-native multiplayer, built in the spirit of Gang Beasts and Human Fall Flat &mdash; stripped down to something you can join from a room code and finish before the kettle boils.</p>
+</div>
+<img id="bravoLoopImg" alt="Bravo" style="width: min(20vh,150px); height: auto; border-radius: 24px; border: 4px solid #fff; box-shadow: 0 10px 22px rgba(0,0,0,0.3);"></div>
+<div class="loop">
+<div class="card loop-step">
+<div class="k">01</div>
+<h4>Spawn</h4>
+<p>Four players drop radially onto a circular stadium platform.</p>
+</div>
+<div class="card loop-step">
+<div class="k">02</div>
+<h4>Push &amp; grab</h4>
+<p>Shove, dodge, or grab-and-throw opponents toward the edge.</p>
+</div>
+<div class="card loop-step">
+<div class="k">03</div>
+<h4>Ring-out</h4>
+<p>Knock a cube off the platform and they're out &mdash; last one standing wins the round.</p>
+</div>
+</div>
+</div>
+<div class="foot">
+<div class="studio"><span class="sq"></span> SumoQubes</div>
+<div>What it is</div>
+</div>
+</section>
+<!-- 4 : WHY ENTITY -->
+<section class="slide bg-cream">
+<div class="eyebrow" style="--eb: var(--cyan);"><span class="num">04</span> WHY ENTITY, SPECIFICALLY</div>
+<div class="slide-body">
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 4vw; align-items: center;">
+<h2 class="display headline outline" style="--stroke: var(--cyan-deep); margin-bottom: 0;">We already build<br>on your stack</h2>
+<svg width="150" height="130" viewBox="0 0 150 130" style="flex-shrink: 0;">
+          <rect x="10" y="10" width="130" height="30" rx="8" fill="var(--cyan)"></rect>
+          <text x="75" y="30" text-anchor="middle" font-family="Titan One" font-size="12" fill="#fff">RENDER</text>
+          <rect x="10" y="50" width="130" height="30" rx="8" fill="var(--purple)"></rect>
+          <text x="75" y="70" text-anchor="middle" font-family="Titan One" font-size="12" fill="#fff">PHYSICS</text>
+          <rect x="10" y="90" width="130" height="30" rx="8" fill="var(--orange)"></rect>
+          <text x="75" y="110" text-anchor="middle" font-family="Titan One" font-size="12" fill="#fff">NETPLAY</text>
+        </svg></div>
+<p class="lede" style="margin-bottom: 1vh;">Entity is betting on WebGL/WebGPU, WebAssembly and WebRTC as the future of console-quality browser gaming. SumoQubes isn't a port &mdash; it's already built on exactly that foundation.</p>
+<div class="pillars">
+<div class="card pillar"><span class="tag" style="--tagbg: var(--cyan);">Rendering</span>
+<h3>React Three Fiber + Three.js</h3>
+<p>Real-time 3D rendering of the ring, the cubes, and their 20-bone squash-and-stretch rigs, running straight in WebGL.</p>
+<div class="maps">&rarr; Entity's WebGL / WebGPU pillar</div>
+</div>
+<div class="card pillar"><span class="tag" style="--tagbg: var(--purple);">Physics</span>
+<h3>Rapier (Rust &rarr; WASM)</h3>
+<p>Every push, grab and ring-out is real rigid-body physics, compiled to WebAssembly for near-native performance in-browser.</p>
+<div class="maps">&rarr; Entity's WebAssembly pillar</div>
+</div>
+<div class="card pillar"><span class="tag" style="--tagbg: var(--orange);">Multiplayer</span>
+<h3>Playroomkit / WebRTC</h3>
+<p>Room-code, host-authoritative multiplayer over WebRTC &mdash; four players in a match with nothing to install.</p>
+<div class="maps">&rarr; Entity's WebRTC pillar</div>
+</div>
+</div>
+</div>
+<div class="foot dark">
+<div class="studio"><span class="sq"></span> SumoQubes</div>
+<div>Why Entity</div>
+</div>
+</section>
+<!-- 5 : ROSTER -->
+<section class="slide bg-yellow roster-slide">
+<div class="eyebrow" style="--eb: var(--purple);"><span class="num">05</span> THE ROSTER</div>
+<div class="slide-body" style="min-height: 0;">
+<h2 class="display headline outline" style="--stroke: var(--purple); text-align: center;">Seven cubes. Seven personalities.</h2>
+<div class="roster-wrap">
+<div class="roster-ring" id="rosterRing">
+<div class="roster-center"><img id="heroesImg" alt="SumoQubes cast" style="width: 200px; height: auto; filter: drop-shadow(0 8px 18px rgba(0,0,0,0.35));"></div>
+</div>
+</div>
+</div>
+<div class="foot">
+<div class="studio"><span class="sq"></span> SumoQubes</div>
+<div>The Roster</div>
+</div>
+</section>
+<!-- 6 : SESSION / SOCIAL -->
+<section class="slide bg-pink social-slide">
+<div class="eyebrow" style="--eb: var(--yellow);"><span class="num" style="color: var(--ink);">06</span> DESIGNED TO SPREAD</div>
+<div class="slide-body">
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 5vw; align-items: start;">
+<h2 class="display headline outline" style="--stroke: var(--orange-dark); margin-bottom: 0;">Built for the clip,<br>not just the session</h2>
+<img id="jinxSpreadImg" alt="Jinx!" style="height: auto; border-radius: 24px; border: 4px solid #fff; box-shadow: 0 10px 22px rgba(0,0,0,0.3);"></div>
+<p class="lede light" style="margin: 2vh 0 2vh 0;">A ring-out is a complete, shareable moment &mdash; a few seconds of physics comedy with a clear winner. The character designs are deliberately simple and expressive: flat faces, bold silhouettes, no limbs to animate wrong. That's a roadmap strength for short-form platforms like TikTok, not a shipped feature today.</p>
+<div class="loop">
+<div class="card loop-step">
+<h4>Access</h4>
+<p style="font-size: 13px;">A shared link or room code is the entire onboarding flow &mdash; the same zero-friction bar Entity is building the platform around.</p>
+</div>
+<div class="card loop-step">
+<h4>Cross-device</h4>
+<p style="font-size: 13px;">Desktop keyboard input and mobile touch controls both drive the same physics build &mdash; one codebase, every screen.</p>
+</div>
+</div>
+</div>
+<div class="foot">
+<div class="studio"><span class="sq"></span> SumoQubes</div>
+<div>Designed to spread</div>
+</div>
+</section>
+<!-- 7 : VAS -->
+<section class="slide bg-purple">
+<div class="eyebrow" style="--eb: var(--yellow);"><span class="num" style="color: var(--ink);">07</span> BEYOND THE RING</div>
+<div class="slide-body">
+<div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 5vw; align-items: center;">
+<div>
+<h2 class="display headline outline" style="--stroke: var(--pink-dark);">VAS: the character<br>engine behind the game</h2>
+<p class="lede light" style="margin-top: 14px; margin-bottom: 2vh; max-width: 44ch;">Our Virtual Animation System is a separate real-time UE5 pipeline &mdash; face motion capture plus gamepad and MIDI-driven camera and lighting &mdash; that turns the roster into ongoing "kayfabe" video content for YouTube and TikTok, independent of the game's own codebase.</p>
+<div class="loop">
+<div class="card loop-step" style="min-width: 0;">
+<h4>Status</h4>
+<p style="font-size: 13px;">Pipeline exists; webisode integration is scoped as post-sprint work, not yet shipping content.</p>
+</div>
+<div class="card loop-step" style="min-width: 0;">
+<h4>Planned use</h4>
+<p style="font-size: 13px;">Opening feud: Horatio vs Punkie, then Horatio vs Jinx! &mdash; in-character rivalries driving the roster reveal.</p>
+</div>
+</div>
+</div>
+<div style="position: relative; justify-self: center;">
+<div style="width: min(30vh,240px); aspect-ratio: 9/16; background: #111; border-radius: 20px; border: 5px solid #fff; box-shadow: 0 16px 30px rgba(0,0,0,0.4); overflow: hidden; position: relative;"><img id="horatioVasImg" alt="Horatio" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.92;">
+<div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+<div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--pink-dark);">▶</div>
+</div>
+<div style="position: absolute; bottom: 10px; left: 10px; right: 10px; color: #fff; font-family: 'Titan One'; font-size: 12px; text-shadow: 1px 1px 3px rgba(0,0,0,0.6);">@republicoffunltd</div>
+</div>
+</div>
+</div>
+</div>
+<div class="foot">
+<div class="studio"><span class="sq"></span> SumoQubes</div>
+<div>Beyond the ring</div>
+</div>
+</section>
+<!-- 8 : STUDIO / TEAM (ROFL treatment) -->
+<section class="slide bg-teal studio-slide">
+<div class="eyebrow" style="--eb: var(--pink);"><span class="num">08</span> THE STUDIO</div>
+<div class="slide-body">
+<div class="studio-grid" style="display: grid; grid-template-columns: 1fr auto; gap: 5vw; align-items: center;">
+<div>
+<h1 class="display headline outline" style="--stroke: var(--pink-dark); font-size: clamp(28px,4vw,52px);">Republic<br>of Fun Ltd.</h1>
+<p class="lede light" style="margin-top: 14px; margin-bottom: 3vh; max-width: 42ch;">"We, the people of the Republic of Fun Limited, demand our right to PLAY" &mdash; a studio that refuses stale mechanics and rubbish storytelling. SumoQubes is our flagship build.</p>
+</div>
+<img id="roflImg" alt="Republic of Fun Ltd." style="height: auto; border-radius: 24px; box-shadow: 0 14px 30px rgba(0,0,0,0.3); border: 4px solid #fff;"></div>
+<div class="team">
+<div class="card member">
+<div class="role">Creative Direction &amp; Development</div>
+<h3>Moykul O'Conghaile</h3>
+<p>Designed and built SumoQubes' physics core, character rigs and match systems solo &mdash; from the Rapier migration to the full seven-character roster integration.</p>
+</div>
+<div class="card member">
+<div class="role">Visuals</div>
+<h3>Marcos Ventura</h3>
+<p>Character and world art direction &mdash; the look of every cube, ring and arena.</p>
+</div>
+<div class="card member">
+<div class="role">Coding</div>
+<h3>Natalia di Simone</h3>
+<p>Engineering &mdash; physics, networking and the systems that hold the ring together.</p>
+</div>
+</div>
+</div>
+<div class="foot" style="position: relative;">
+<div class="studio"><span class="sq"></span> SumoQubes</div>
+<div>republicoffunltd.com</div>
+</div>
+</section>
+<!-- 9 : ROADMAP / STATUS -->
+<section class="slide bg-cream">
+<div class="eyebrow" style="--eb: var(--orange);"><span class="num">09</span> WHERE WE ARE</div>
+<div class="slide-body">
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 4vw; align-items: center;">
+<h2 class="display headline outline" style="--stroke: var(--orange-dark); margin-bottom: 0;">Honest status</h2>
+<svg width="170" height="46" viewBox="0 0 170 46" style="flex-shrink: 0;">
+          <line x1="10" y1="23" x2="160" y2="23" stroke="var(--orange)" stroke-width="3"></line>
+          <circle cx="20" cy="23" r="9" fill="#0a8a5c"></circle>
+          <circle cx="65" cy="23" r="9" fill="#0a8a5c"></circle>
+          <circle cx="110" cy="23" r="9" fill="var(--orange-dark)"></circle>
+          <circle cx="155" cy="23" r="9" fill="#c9c0a6"></circle>
+        </svg></div>
+<p class="lede" style="margin-bottom: 1vh;">The Battle Royale core is in late-stage development. Here's what's real today, what's actively open, and what's next &mdash; no rounding up.</p>
+<div class="road">
+<div class="card road-row">
+<div class="state done">Built</div>
+<div>
+<h4>Physics-driven core loop</h4>
+<p>Push, grab-and-throw, dodge and ring-out elimination running on real rigid-body physics across all seven characters.</p>
+</div>
+</div>
+<div class="card road-row">
+<div class="state done">Built</div>
+<div>
+<h4>4-player networked matches</h4>
+<p>Host-authoritative multiplayer sync, keyboard and mobile touch input, full roster integrated and testable.</p>
+</div>
+</div>
+<div class="card road-row">
+<div class="state done">Shown</div>
+<div>
+<h4>Public playtest &mdash; GamerFest Dublin</h4>
+<p>Demoed an early alpha live on the show floor &mdash; first outside validation that strangers pick it up and get it immediately.</p>
+</div>
+</div>
+<div class="card road-row">
+<div class="state progress">Open</div>
+<div>
+<h4>4-player live human playtest</h4>
+<p>A scheduling gap, not a technical one &mdash; E2E and multi-tab self-play are exhausted; needs a real more human testing.</p>
+</div>
+</div>
+<div class="card road-row">
+<div class="state progress">Open</div>
+<div>
+<h4>Debug &amp; Logs cleanup</h4>
+<p>Dev-only instrumentation still present; gated or removed before any mobile or public build.</p>
+</div>
+</div>
+<div class="card road-row">
+<div class="state next">Next</div>
+<div>
+<h4>Multi-arena round structure</h4>
+<p>Nine-round matches across six themed arenas, spectator input tiers, and per-character abilities &mdash; designed, not yet built.</p>
+</div>
+</div>
+<div class="card road-row">
+<div class="state next">Next</div>
+<div>
+<h4>Social &amp; VAS reactivation</h4>
+<p>TikTok rollout and webisode pipeline integration, deliberately paused for the sprint window.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="foot dark">
+<div class="studio"><span class="sq"></span> SumoQubes</div>
+<div>Where we are</div>
+</div>
+</section>
+<!-- 10 : THE ASK -->
+<section class="slide bg-cyan ask-slide">
+<div class="eyebrow" style="--eb: var(--pink);"><span class="num">10</span> THE ASK</div>
+<div class="slide-body">
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 5vw; align-items: center;">
+<h2 class="display headline outline" style="--stroke: var(--pink-dark); margin-bottom: 0;">What we're<br>looking for</h2>
+<img id="spiceAskImg" alt="Spice" style="height: auto; border-radius: 22px; border: 4px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.3);"></div>
+<p class="lede light" style="margin: 1vh 0;">Entity's own offer to developers lines up directly with what SumoQubes needs to go from strong physics build to launched game:</p>
+<div class="ask-grid">
+<div class="card ask-item">
+<div class="mark">&rarr;</div>
+<div>
+<h4>A launch-portfolio slot</h4>
+<p>SumoQubes fits the "console quality, instantly in browser" thesis without a re-architecture.</p>
+</div>
+</div>
+<div class="card ask-item">
+<div class="mark">&rarr;</div>
+<div>
+<h4>Development funding</h4>
+<p>To finish the round-structure and arena roadmap already scoped and designed.</p>
+</div>
+</div>
+<div class="card ask-item">
+<div class="mark">&rarr;</div>
+<div>
+<h4>Marketing &amp; UA support</h4>
+<p>For a character-driven rollout built around seven distinct, clip-ready personalities.</p>
+</div>
+</div>
+<div class="card ask-item">
+<div class="mark">&rarr;</div>
+<div>
+<h4>Platform SDK &amp; analytics access</h4>
+<p>To wire matchmaking, sessions and social features straight into Entity's tooling.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="foot">
+<div class="studio"><span class="sq"></span> SumoQubes</div>
+<div>The ask</div>
+</div>
+</section>
+<!-- 10 : CONTACT -->
+<section class="slide bg-yellow">
+<div class="splat-wrap" style="bottom: -12vh; left: -8vw; opacity: 0.8;"><svg viewBox="0 0 400 400" opacity="0.08"><path fill="#000" opacity="0.08" d="M200 20c18 0 22 28 40 30 20 2 40-14 54 0 14 14-4 32 4 50 8 18 34 20 34 40s-26 22-34 40c-8 18 10 36-4 50-14 14-34-2-54 0-18 2-22 30-40 30s-22-28-40-30c-20-2-40 14-54 0-14-14 4-32-4-50-8-18-34-20-34-40s26-22 34-40c8-18-10-36 4-50 14-14 34 2 54 0 18-2 22-30 40-30Z"></path></svg></div>
+<div class="eyebrow" style="--eb: var(--purple);"><span class="num">11</span> LET'S TALK</div>
+<div class="slide-body">
+<h1 class="display headline outline" style="--stroke: var(--pink-dark);">Let's put SumoQubes<br>in the ring.</h1>
+<div style="display: flex; gap: 14px; margin-top: 26px; flex-wrap: wrap;"><a class="btn" style="--btn-bg: var(--pink); --btn-border: var(--pink-dark);" href="https://www.sumoqubes.com/" target="_blank" rel="noopener">sumoqubes.com</a> <a class="btn" style="--btn-bg: var(--cyan-deep); --btn-border: #00688a;" href="https://republicoffunltd.com/" target="_blank" rel="noopener">republicoffunltd.com</a></div>
+<p class="lede" style="margin-top: 24px; font-weight: 800;">Republic of Fun Ltd. &mdash; Moykul O'Conghaile</p>
+</div>
+<div class="foot">
+<div class="studio"><span class="sq"></span> SumoQubes</div>
+<div>Thank you</div>
+</div>
+</section>
+</div>
+<div class="nav"><button id="prevBtn" aria-label="Previous slide">&lsaquo;</button>
+<div class="dots" id="dots"></div>
+<button id="nextBtn" aria-label="Next slide">&rsaquo;</button></div>
+<script>
+const IMG_BABY = 'img/baby.webp';
+const IMG_BRAVO = 'img/bravo.webp';
+const IMG_BRUTUS = 'img/brutus.webp';
+const IMG_HORATIO = 'img/horatio.webp';
+const IMG_JINX = 'img/jinx.webp';
+const IMG_PUNKIE = 'img/punkie.webp';
+const IMG_SPICE = 'img/spice.webp';
+const IMG_MARK = 'img/mark.jpg';
+const IMG_HEROES = 'img/heroes.png';
+const IMG_ROFL = 'img/rofl.png';
+
+
+function setImageSource(id, source) {
+  const image = document.getElementById(id);
+  if (image) image.src = source;
+}
+
+setImageSource('markImg', IMG_MARK);
+setImageSource('heroesImg', IMG_HEROES);
+setImageSource('roflImg', IMG_ROFL);
+setImageSource('heroesHookImg', IMG_HEROES);
+setImageSource('bravoLoopImg', IMG_BRAVO);
+setImageSource('jinxSpreadImg', IMG_JINX);
+setImageSource('horatioVasImg', IMG_HORATIO);
+setImageSource('spiceAskImg', IMG_SPICE);
+
+const roster = [
+  {name:'Horatio', img:IMG_HORATIO, tag:'Speaks like a king. Falls like everyone else.', color:'#8b3fbf'},
+  {name:'Bravo', img:IMG_BRAVO, tag:'All swagger, all shove.', color:'#3f8bee'},
+  {name:'Brutus', img:IMG_BRUTUS, tag:'Immovable object. Mostly.', color:'#00ff74'},
+  {name:'Punkie', img:IMG_PUNKIE, tag:"Rules are for other cubes.", color:'#da2f6a'},
+  {name:'Spice', img:IMG_SPICE, tag:'Sweet face. Ruthless shove.', color:'#00c8f5'},
+  {name:'Jinx!', img:IMG_JINX, tag:'Bad luck — for you specifically.', color:'#ffd700'},
+  {name:'Baby', img:IMG_BABY, tag:'The rookie everyone underestimates.', color:'#ff8e00'},
+];
+
+const ring = document.getElementById('rosterRing');
+const isMobile = window.matchMedia('(max-width:860px)').matches;
+const radius = isMobile ? 40 : 42;
+roster.forEach((c,i)=>{
+  const angle = (i / roster.length) * 2*Math.PI - Math.PI/2;
+  const x = 50 + radius*Math.cos(angle);
+  const y = 50 + radius*Math.sin(angle);
+  const el = document.createElement('div');
+  el.className = 'cube-card';
+  el.style.left = x+'%';
+  el.style.top = y+'%';
+  el.style.setProperty('--card-color', c.color);
+  el.innerHTML = `<div class="portrait"><img src="${c.img}" alt="${c.name}"></div>
+    <div class="name">${c.name}</div>
+    <div class="tagline">${c.tag}</div>`;
+  ring.appendChild(el);
+});
+
+const slides = Array.from(document.querySelectorAll('.slide'));
+const dotsWrap = document.getElementById('dots');
+let cur = 0;
+slides.forEach((_,i)=>{
+  const d = document.createElement('span');
+  if(i===0) d.classList.add('on');
+  d.addEventListener('click', ()=>go(i));
+  dotsWrap.appendChild(d);
+});
+const dots = Array.from(dotsWrap.children);
+
+function go(i){
+  cur = Math.max(0, Math.min(slides.length-1, i));
+  slides.forEach((s,idx)=>s.classList.toggle('active', idx===cur));
+  dots.forEach((d,idx)=>d.classList.toggle('on', idx===cur));
+}
+document.getElementById('prevBtn').addEventListener('click', ()=>go(cur-1));
+document.getElementById('nextBtn').addEventListener('click', ()=>go(cur+1));
+window.addEventListener('keydown', (e)=>{
+  if(e.key==='ArrowRight' || e.key===' ') go(cur+1);
+  if(e.key==='ArrowLeft') go(cur-1);
+});
+let touchX = null;
+window.addEventListener('touchstart', e=>{touchX = e.touches[0].clientX;});
+window.addEventListener('touchend', e=>{
+  if(touchX===null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if(dx > 50) go(cur-1);
+  if(dx < -50) go(cur+1);
+  touchX = null;
+});
+</script>
+</body>
+</html>
