@@ -22,6 +22,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "docs/img/**",
+      "use": "@vercel/static"
+    },
+    {
       "src": "fonts/**",
       "use": "@vercel/static"
     }
